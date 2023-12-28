@@ -1,0 +1,18 @@
+﻿<SfGrid @ref="_grid" TValue="GeoItem" DataSource="@Items" AllowFiltering=true AllowPaging=true AllowGrouping=true AllowSorting=true AllowReordering=true AllowMultiSorting=true>
+    <GridFilterSettings Type="FilterType.Excel" />
+    <GridPageSettings PageSize="17" PageSizes=true></GridPageSettings>
+    <GridGroupSettings ShowDropArea="true" Columns=@(new string[] { "EnglishCountryRegionName" })></GridGroupSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(GeoItem.GeographyKey) IsPrimaryKey=true></GridColumn>
+        <GridColumn Field=@nameof(GeoItem.City)></GridColumn>
+        <GridColumn Field=@nameof(GeoItem.StateProvinceCode)></GridColumn>
+        <GridColumn Field=@nameof(GeoItem.StateProvinceName)></GridColumn>
+        <GridColumn Field=@nameof(GeoItem.CountryRegionCode)></GridColumn>
+        <GridColumn Field=@nameof(GeoItem.EnglishCountryRegionName)></GridColumn>
+        <GridColumn Field=@nameof(GeoItem.SpanishCountryRegionName)></GridColumn>
+        <GridColumn Field=@nameof(GeoItem.FrenchCountryRegionName)></GridColumn>
+        <GridColumn Field=@nameof(GeoItem.PostalCode)></GridColumn>
+        @* <GridColumn Field=@nameof(GeoItem.SalesTerritoryKey)></GridColumn> *@
+        @* <GridColumn Field=@nameof(GeoItem.IpAddressLocator)></GridColumn> *@
+    </GridColumns>
+</SfGrid>

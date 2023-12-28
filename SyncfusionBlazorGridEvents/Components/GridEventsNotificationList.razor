@@ -1,0 +1,109 @@
+﻿@using Syncfusion.Blazor.DropDowns
+
+<SfGrid ID="eventnotifications-grid" @ref="_grid" TValue="GridEventNotification" DataSource="GridEventNotifications" Width="440" AllowFiltering=true AllowSelection=true AllowPaging=true>
+    <GridFilterSettings Type="SG.FilterType.CheckBox"></GridFilterSettings>
+    <GridEditSettings AllowEditing=true Mode="SG.EditMode.Dialog" />
+    <GridEvents TValue="GridEventNotification" OnActionComplete="OnActionCompleteHandlerAsync" OnActionBegin="OnActionBeginHandlerAsync"></GridEvents>
+    <GridPageSettings PageSize="20" PageSizes=true></GridPageSettings>
+    <GridColumns>
+        <GridColumn Width="200" Field=@nameof(GridEventNotification.Event) HeaderText="Grid Event" IsPrimaryKey=true AllowEditing=false></GridColumn>
+        <GridColumn Width="200" Field=@nameof(GridEventNotification.Type) HeaderText="Notification Type">
+            <EditTemplate>
+                <SfDropDownList TItem="DropdownItem" TValue="NotificationType"
+                                DataSource="@NotificationTypes"
+                                Value="@((context as GridEventNotification)!.Type)"
+                                ValueChanged="OnValueChanged">
+                    <DropDownListFieldSettings Text="Text" Value="Value"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </EditTemplate>
+        </GridColumn>
+    </GridColumns>
+    <GridSelectionSettings EnableToggle=true
+                           Mode="SG.SelectionMode.Row"
+                           CheckboxOnly=false
+                           CheckboxMode="CheckboxSelectionType.Default"
+                           PersistSelection=true
+                           AllowDragSelection=true
+                           Type="SG.SelectionType.Multiple">
+    </GridSelectionSettings>
+</SfGrid>
+
+<style>
+    .hidden-first-row .e-table tbody tr:first-child {
+        display: none;
+    }
+</style>
+
+<script>
+    function addClassWhenDialogVisible(dialogId, className) {
+        var observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                if (!mutation.addedNodes) { return; };
+                for (var i = 0; i < mutation.addedNodes.length; i++) {
+                    // Check if the added node is the dialog
+                    if (mutation.addedNodes[i].id === dialogId) {
+                        mutation.addedNodes[i].classList.add(className);
+                        observer.disconnect(); // Stop observing after adding the class
+                    }
+                }
+            });
+        });
+
+        // Observe the body for addition of new child elements (or subtree elements)
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    function updateDialogTitleWhenAvailable(dialogId, title) {
+        var observer = new MutationObserver(function (mutations, observer) {
+            var dialogElement = document.getElementById(dialogId);
+            if (dialogElement) {
+                dialogElement.innerText = title;
+                observer.disconnect(); // Stop observing after updating the title
+            }
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    function focusAndOpenDropdownWhenVisible() {
+        var observer = new MutationObserver(function (mutations, observer) {
+            var dialogElement = document.querySelector('.e-dialog');
+            if (dialogElement && isVisible(dialogElement)) {
+                var dropdownElement = dialogElement.querySelector('.e-dropdownlist');
+                if (dropdownElement) {
+                    dropdownElement.focus();
+                    simulateClick(dropdownElement);
+                    observer.disconnect(); // Disconnect the observer
+                }
+            }
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    function isVisible(element) {
+        return element.offsetWidth > 0 || element.offsetHeight > 0 || element.getClientRects().length > 0;
+    }
+
+    function simulateClick(element) {
+        setTimeout(() => {
+            if (element.dispatchEvent) {
+                var event = new MouseEvent('click', {
+                    'view': window,
+                    'bubbles': true,
+                    'cancelable': true
+                });
+                element.dispatchEvent(event);
+            }
+        }, 100); // Delay in milliseconds
+    }
+</script>

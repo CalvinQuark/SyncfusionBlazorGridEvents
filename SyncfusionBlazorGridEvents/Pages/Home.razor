@@ -1,0 +1,19 @@
+﻿@page "/"
+
+<PageTitle>SyncfusionBlazorGridEvents</PageTitle>
+
+<CascadingValue Value="_gridEventNotifications">
+    <table>
+        <tbody>
+            <tr style="vertical-align: top;">
+                <td>
+                    <GridEventsNotificationList @ref="_gridEventsNotificationList"></GridEventsNotificationList>
+                    @* <GridEventsNotificationList></GridEventsNotificationList> *@
+                </td>
+                <td>
+                    <SubjectGrid @ref="_subjectGrid"></SubjectGrid>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</CascadingValue>
